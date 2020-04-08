@@ -1,11 +1,8 @@
 package com.multithread;
 
-import org.omg.CORBA.PRIVATE_MEMBER;
-
 import java.io.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @Author: chenmingzhe

@@ -3,32 +3,30 @@ package com.multithread;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.concurrent.*;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @Author: chenmingzhe
  * @Date: 2020/3/30 12:07
  */
 public class FileSearch {
-    private ConcurrentHashMap<String,Integer> map;
+    private ConcurrentHashMap<String, Integer> map;
     private String dir;
     private CountDownLatch latch;
+    private ThreadPoolExecutor executorService;
 
     public FileSearch(String dir) {
         this.dir = dir;
-        this.map = new ConcurrentHashMap<String,Integer>();
+        this.map = new ConcurrentHashMap<String, Integer>();
         this.latch = new CountDownLatch(3);
-    }
-
-    public synchronized ConcurrentHashMap<String, Integer> listFile() {
-        ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("custom-pool-%d").build();
-        ThreadPoolExecutor executorService =
+        this.executorService =
                 new ThreadPoolExecutor(3, 10,
                         200, TimeUnit.MICROSECONDS,
-                        new LinkedBlockingQueue<>(50),threadFactory);
+                        new LinkedBlockingQueue<>(50),
+                        new ThreadFactoryBuilder().setNameFormat("custom-pool-%d").build());
+    }
 
+    public ConcurrentHashMap<String, Integer> listFile() {
         long l = System.currentTimeMillis();
         File fileDir = new File(dir);
         if (fileDir.exists()) {
@@ -37,7 +35,7 @@ public class FileSearch {
                 throw new NullPointerException("file is empty");
             }
             for (File file : files) {
-                executorService.execute(new FileReaderHandler(file,map,latch));
+                executorService.execute(new FileReaderHandler(file, map, latch));
             }
             try {
                 latch.await();
@@ -45,8 +43,7 @@ public class FileSearch {
                 e.printStackTrace();
             }
             executorService.shutdown();
-            System.out.println("耗时："+ (System.currentTimeMillis() - l)+"-------------");
-
+            System.out.println("耗时：" + (System.currentTimeMillis() - l) + "-------------");
         }
         return map;
     }
