@@ -1,0 +1,34 @@
+server:
+  port: 7100
+
+spring:
+  application:
+    name: rmec-eureka
+
+### Eureka ###
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:${server.port}/eureka/
+
+### Actuator ###
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+### Logging ###
+logging:
+  file:
+    max-size: 200MB
+  pattern:
+    console: '[%X{flowno}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n'
+    file: ${logging.pattern.console}
+  level:
+    'com.gss': 'DEBUG'  

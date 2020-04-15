@@ -1,0 +1,50 @@
+server:
+  port: 8103
+
+### Eureka ###
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:7100/eureka/
+
+spring:
+  application:
+    name: rmec-stock
+  ### 数据源 ###
+  datasource:
+      druid:
+        url: jdbc:mysql://127.0.0.1:3306/rmec?serverTimezone=GMT%2B8&characterEncoding=UTF-8
+        username: root
+        password:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        initial-size: 1
+        max-active: 150
+        min-idle: 1
+        max-wait: 60000
+        pool-prepared-statements: true
+        max-pool-prepared-statement-per-connection-size: 20
+        validation-query: SELECT 'x'
+        test-on-borrow: false
+        test-on-return: false
+        test-while-idle: true
+        time-between-eviction-runs-millis: 60000
+
+### mybatis-plus ###
+mybatis-plus:
+  mapper-locations: classpath*:mapper/xml/*.xml
+###日志打印###
+logging:
+  level:
+    com.library: debug
+
+# 放开Actuator Web REST 端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+    gateway:
+      enabled: true
