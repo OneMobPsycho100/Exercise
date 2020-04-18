@@ -34,8 +34,13 @@ mybatis-plus:
   mapper-locations: classpath*:mapper/xml/*.xml
 ###日志打印###
 logging:
+  file:
+    max-size: 200MB
+  pattern:
+    console: '[%X{flowno}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n'
+    file: ${logging.pattern.console}
   level:
-    com.library: debug
+    'com.stock': 'DEBUG'
 
 # 放开Actuator Web REST 端点
 management:

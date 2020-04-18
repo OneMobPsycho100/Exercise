@@ -29,15 +29,28 @@ spring:
         test-while-idle: true
         time-between-eviction-runs-millis: 60000
 
+### rabbitmq ###
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
 ### mybatis-plus ###
 mybatis-plus:
   mapper-locations: classpath*:mapper/xml/*.xml
+
 ###日志打印###
 logging:
+  file:
+    max-size: 200MB
+  pattern:
+    console: '[%X{flowno}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n'
+    file: ${logging.pattern.console}
   level:
-    com.library: debug
+    'com.order': 'DEBUG'
 
-# 放开Actuator Web REST 端点
+### 放开Actuator Web REST端点 ###
 management:
   endpoints:
     web:
@@ -46,5 +59,3 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
-    gateway:
-      enabled: true

@@ -31,4 +31,4 @@ logging:
     console: '[%X{flowno}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n'
     file: ${logging.pattern.console}
   level:
-    'com.gss': 'DEBUG'  
+    'com.eureka': 'DEBUG'
