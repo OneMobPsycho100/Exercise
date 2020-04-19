@@ -1,8 +1,13 @@
 package com.remc.config;
 
+import com.remc.common.Constants;
 import com.remc.common.IdWorker;
+import com.remc.service.RabbitMqService;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,14 +24,21 @@ public class RmecConfiguration {
     }
 
     @Bean
-    public SimpleMessageListenerContainer messageContainer(ConnectionFactory connectionFactory) {
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory);
-        container.setExposeListenerChannel(true);
-        container.setMaxConcurrentConsumers(3);
-        container.setConcurrentConsumers(1);
-   //     container.setMessageListener(queueListener);
-        return container;
+    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
+        RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);
+        rabbitAdmin.setAutoStartup(true);
+        return rabbitAdmin;
     }
 
+    @Bean
+    public RabbitMqService rabbitMqService() {
+        return new RabbitMqService();
+    }
+
+
+    @Bean
+    public DirectExchange directExchange() {
+        return new DirectExchange("directExchange");
+    }
 
 }

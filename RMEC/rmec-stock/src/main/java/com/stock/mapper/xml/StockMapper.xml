@@ -2,4 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.stock.mapper.StockMapper">
 
+    <update id="deductionByName" parameterType="string">
+        UPDATE t_stock t
+        set  t.stock = t.stock - 1
+          ,t.version = t.version +1
+        WHERE t.goodname = #{goodname}
+          AND t.stock > 0
+    </update>
 </mapper>

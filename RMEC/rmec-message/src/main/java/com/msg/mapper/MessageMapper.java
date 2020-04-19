@@ -1,6 +1,6 @@
 package com.msg.mapper;
 
-import com.msg.entity.Message;
+import com.msg.entity.MessageInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 /**
  * <p>
@@ -10,6 +10,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author chenmingzhe
  * @since 2020-04-18
  */
-public interface MessageMapper extends  BaseMapper<Message> {
+public interface MessageMapper extends  BaseMapper<MessageInfo> {
 
 }

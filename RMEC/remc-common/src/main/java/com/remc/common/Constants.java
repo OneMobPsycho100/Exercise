@@ -6,9 +6,21 @@ package com.remc.common;
  */
 public class Constants {
 
-
+    public static final String ROUTERKEY_ORDER = "order";
+    public static final String ROUTERKEY_STOCK = "STOCK";
+    public static final String QUEUE_STOCK = "remc.stock";
+    public static final String QUEUE_ORDER = "remc.order";
 
     private Constants() {
     }
 
+    public static final class BizType {
+        public static final String TYPE_ORDER_STOCK = "order_stock";
+    }
+
+    public static final class MessageStatus {
+        public static final int STATUS_INIT = 1;
+        public static final int STATUS_SEND = 2;
+        public static final int STATUS_END = 3;
+    }
 }

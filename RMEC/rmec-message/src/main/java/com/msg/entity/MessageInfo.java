@@ -3,6 +3,8 @@ package com.msg.entity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 /**
  * <p>
@@ -12,7 +14,8 @@ import java.io.Serializable;
  * @author chenmingzhe
  * @since 2020-04-18
  */
-public class Message  implements Serializable {
+@TableName("t_message")
+public class MessageInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,7 +32,7 @@ public class Message  implements Serializable {
     private String data;
 
     @TableField("biztype")
-    private Integer biztype;
+    private String biztype;
 
     @TableField("updatetime")
     private LocalDateTime updatetime;
@@ -70,11 +73,11 @@ public class Message  implements Serializable {
         this.data = data;
     }
 
-    public Integer getBiztype() {
+    public String getBiztype() {
         return biztype;
     }
 
-    public void setBiztype(Integer biztype) {
+    public void setBiztype(String biztype) {
         this.biztype = biztype;
     }
 

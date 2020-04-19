@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @author chenmingzhe
  * @since 2020-04-18
  */
-@TableName("stock")
+@TableName("t_stock")
 public class Stock  implements Serializable {
 
     private static final long serialVersionUID = 1L;

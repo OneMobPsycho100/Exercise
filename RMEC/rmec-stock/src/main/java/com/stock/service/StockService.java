@@ -16,4 +16,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 @Service
 public class StockService extends  ServiceImpl<StockMapper, Stock> {
 
+    public void deduction(String goodname) {
+        this.baseMapper.deductionByName(goodname);
+    }
 }

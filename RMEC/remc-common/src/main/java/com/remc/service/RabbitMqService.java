@@ -1,23 +1,26 @@
 package com.remc.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.remc.common.Constants;
+import com.alibaba.fastjson.serializer.SerializeFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.SmartLifecycle;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 /**
  * @Author: chenmingzhe
  * @Date: 2020/4/18 22:55
  */
-public class RabbitMqService implements SmartLifecycle {
+public class RabbitMqService {
+
+    private Logger logger = LoggerFactory.getLogger(RabbitMqService.class);
 
     public static final String ROUTERKEY_ORDER = "order";
     public static final String ROUTERKEY_STOCK = "STOCK";
@@ -28,40 +31,22 @@ public class RabbitMqService implements SmartLifecycle {
     private RabbitAdmin rabbitAdmin;
 
     @Autowired
-    @Qualifier("remcMessageContainer")
-    private SimpleMessageListenerContainer listenerContainer;
-
-    @Autowired
-    @Qualifier("remcExchange")
     private DirectExchange directExchange;
-
-    @Override
-    public void start() {
-        addNewQueue(QUEUE_ORDER, ROUTERKEY_ORDER);
-        addNewQueue(QUEUE_STOCK, ROUTERKEY_STOCK);
-    }
 
     public void addNewQueue(String queueName, String routerKey) {
         Properties properties = this.rabbitAdmin.getQueueProperties(queueName);
         Queue queue = new Queue(queueName);
         if (properties == null) {
             rabbitAdmin.declareQueue(queue);
-            listenerContainer.addQueues(queue);
+          //  listenerContainer.addQueues(queue);
         }
         rabbitAdmin.declareBinding(BindingBuilder.bind(queue).to(directExchange).with(routerKey));
     }
 
     public void sendMessage(String routerKey, Object data) {
-        rabbitAdmin.getRabbitTemplate().convertAndSend(directExchange.getName(), routerKey, JSONObject.toJSONString(data));
+        logger.info(JSONObject.toJSONString(data));
+        rabbitAdmin.getRabbitTemplate().convertAndSend(directExchange.getName(),
+                routerKey, JSONObject.toJSONString(data));
     }
 
-    @Override
-    public void stop() {
-
-    }
-
-    @Override
-    public boolean isRunning() {
-        return true;
-    }
 }

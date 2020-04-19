@@ -22,17 +22,16 @@ import java.time.format.DateTimeFormatter;
 @Service
 public class OrderService extends ServiceImpl<OrderMapper, Order> {
 
-    @Autowired
-    private IdWorker idWorker;
-
     public Order generateOrder(String orderId) {
         Order order = Order.newBuilder()
                 .orderid(orderId)
                 .goodname("MEIZU17PLUS")
+                .orderstatus("1")
                 .price(new BigDecimal("233"))
                 .createtime(LocalDateTime.now())
                 .updatetime(LocalDateTime.now())
                 .build();
+
         this.save(order);
         return order;
     }

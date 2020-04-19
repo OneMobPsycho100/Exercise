@@ -1,16 +1,27 @@
 package com.order.config;
 
+import com.remc.common.Constants;
 import com.remc.service.RabbitMqService;
-import com.remc.config.RmecConfiguration;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+
+import javax.annotation.PostConstruct;
 
 /**
  * @Author: chenmingzhe
- * @Date: 2020/4/18 22:58
+ * @Date: 2020/4/19 12:48
  */
 @Configuration
-@Import({RmecConfiguration.class, RabbitMqService.class})
 public class RabbitMqConfig {
 
+    @Autowired
+    private RabbitMqService rabbitMqService;
+
+    @PostConstruct
+    public void addNewQueue() {
+        rabbitMqService.addNewQueue(Constants.QUEUE_ORDER,Constants.ROUTERKEY_ORDER);
+    }
 }
