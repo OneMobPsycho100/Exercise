@@ -10,6 +10,8 @@
         <module>rmec-stock</module>
         <module>rmec-message</module>
         <module>remc-common</module>
+        <module>rmec-schedule</module>
+        <module>rmec-schedule-api</module>
     </modules>
 
     <parent>

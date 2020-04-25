@@ -1,14 +1,12 @@
 package com.msg.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.msg.entity.MessageInfo;
 import com.rabbitmq.client.Channel;
 import com.remc.dto.MessageDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.listener.api.ChannelAwareMessageListener;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.SmartLifecycle;

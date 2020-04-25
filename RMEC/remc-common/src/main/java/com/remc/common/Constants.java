@@ -11,6 +11,9 @@ public class Constants {
     public static final String QUEUE_STOCK = "remc.stock";
     public static final String QUEUE_ORDER = "remc.order";
 
+    public static final String QUEUE_TASK_DELAY = "delay";
+    public static final String ROUTERKEY_TASK_DELAY = "remc.delay";
+
     private Constants() {
     }
 

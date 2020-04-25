@@ -9,9 +9,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>rmec-message</artifactId>
+    <artifactId>rmec-schedule</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -31,12 +35,20 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
 
         <dependency>
-            <groupId>com.cmz.rmec</groupId>
             <artifactId>remc-common</artifactId>
+            <groupId>com.cmz.rmec</groupId>
             <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <artifactId>rmec-schedule-api</artifactId>
+            <groupId>com.cmz.rmec</groupId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
