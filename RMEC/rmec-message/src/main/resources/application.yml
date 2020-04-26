@@ -1,6 +1,12 @@
 server:
   port: 8101
 
+### 服务 ###
+application:
+  service:
+    schedule:
+      name: rmec-schedule
+
 ### Eureka ###
 eureka:
   client:

@@ -1,9 +1,9 @@
 package com.order.config;
 
 import com.remc.common.Constants;
-import com.remc.service.RabbitMqService;
+import com.remc.service.RabbitMQService;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,10 +18,15 @@ import javax.annotation.PostConstruct;
 public class RabbitMqConfig {
 
     @Autowired
-    private RabbitMqService rabbitMqService;
+    private RabbitMQService rabbitMqService;
 
     @PostConstruct
     public void addNewQueue() {
         rabbitMqService.addNewQueue(Constants.QUEUE_ORDER,Constants.ROUTERKEY_ORDER);
+    }
+
+    @Bean
+    public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory) {
+        return  new SimpleMessageListenerContainer(connectionFactory);
     }
 }

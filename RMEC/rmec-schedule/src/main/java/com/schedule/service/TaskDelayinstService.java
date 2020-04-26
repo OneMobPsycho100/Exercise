@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +31,6 @@ import java.util.List;
  * @author chenmingzhe
  * @since 2020-04-24
  */
-@Service
 public class TaskDelayinstService extends ServiceImpl<TaskDelayinstMapper, TaskDelayinst> {
 
     private Logger logger = LoggerFactory.getLogger(TaskDelayinstService.class);
@@ -45,7 +45,8 @@ public class TaskDelayinstService extends ServiceImpl<TaskDelayinstMapper, TaskD
                 .plusSeconds(delayTask.getDelaytime());
         TaskDelayinst delayInst = TaskDelayinst
                 .newBuilder().delayworkid(idWorker.nextId()).delayid(delayTask.getDelayid())
-                .bizid(bizId).plannedtime(plannedTime
+                .bizid(bizId)
+                .plannedtime(plannedTime
                         .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .status(DelayInstStatusEnum.NOT_RUN.getCode())
                 .build();
@@ -73,8 +74,9 @@ public class TaskDelayinstService extends ServiceImpl<TaskDelayinstMapper, TaskD
                 delayInst.setStatus(DelayInstStatusEnum.RUNNING.getCode());
                 this.updateById(delayInst);
                 Object bean = applicationContext.getBean(workInfo.getBeanname());
-                Method method = bean.getClass().getMethod(workInfo.getMethodname());
+                Method method = bean.getClass().getMethod(workInfo.getMethodname(), String.class);
                 method.invoke(bean, workInfo.getBizId());
+                logger.info("transfer{} {} {}", workInfo.getBeanname(), method, workInfo.getBizId());
             }
         } catch (Exception e) {
             isSucceed = false;

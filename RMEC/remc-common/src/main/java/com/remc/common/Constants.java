@@ -6,6 +6,8 @@ package com.remc.common;
  */
 public class Constants {
 
+    public static final String SCAN_MAPPER = "com.*.mapper";
+
     public static final String ROUTERKEY_ORDER = "order";
     public static final String ROUTERKEY_STOCK = "STOCK";
     public static final String QUEUE_STOCK = "remc.stock";

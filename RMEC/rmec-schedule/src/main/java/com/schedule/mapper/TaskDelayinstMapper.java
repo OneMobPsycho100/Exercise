@@ -16,7 +16,7 @@ import java.util.List;
  * @author chenmingzhe
  * @since 2020-04-24
  */
-public interface TaskDelayinstMapper extends  BaseMapper<TaskDelayinst> {
+public interface TaskDelayinstMapper extends BaseMapper<TaskDelayinst> {
 
     /**
      * 根据task状态和开始时间

@@ -1,8 +1,7 @@
 package com.msg.config;
 
-import com.msg.service.MessageQueueListener;
+import com.msg.listener.MessageQueueListener;
 import com.remc.common.Constants;
-import com.remc.service.RabbitMqService;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;

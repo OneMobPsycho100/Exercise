@@ -1,7 +1,7 @@
 package com.schedule.service;
 
 import com.remc.common.Constants;
-import com.remc.service.RabbitMqService;
+import com.remc.service.RabbitMQService;
 import com.schedule.common.DelayInstStatusEnum;
 import com.schedule.entity.DelayinstWorkInfo;
 import org.quartz.JobExecutionContext;
@@ -27,7 +27,7 @@ public class DelayTaskJob extends QuartzJobBean {
     @Autowired
     private RedisTemplate redisTemplate;
     @Autowired
-    private RabbitMqService rabbitMqService;
+    private RabbitMQService rabbitMqService;
 
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
@@ -37,19 +37,16 @@ public class DelayTaskJob extends QuartzJobBean {
                 .stream()
                 .filter(w -> this.isLock(w.getDelayworkid()))
                 .peek(w -> {
-                    this.addDelayWork(w.getDelayworkid());
                     delayInstService.updateStatusById(DelayInstStatusEnum.WAIT_RUN.getCode(),
                             w.getDelayworkid());
+                    rabbitMqService.addNewQueue(Constants.QUEUE_TASK_DELAY,
+                            Constants.ROUTERKEY_TASK_DELAY);
                 })
                 .collect(Collectors.toList());
 
         for (DelayinstWorkInfo work : delayinstWorkInfos) {
-            rabbitMqService.sendMessage(Constants.ROUTERKEY_TASK_DELAY,work);
+            rabbitMqService.sendMessage(Constants.ROUTERKEY_TASK_DELAY, work);
         }
-    }
-
-    private void addDelayWork(String delayWorkId) {
-
     }
 
     private Boolean isLock(String delayWorkId) {

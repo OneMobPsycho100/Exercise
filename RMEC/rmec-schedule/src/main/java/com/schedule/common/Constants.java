@@ -8,8 +8,6 @@ import java.util.UUID;
  */
 public class Constants {
 
-    public static final String SCAN_MAPPER = "com.schedule.mapper";
-
     /**
      * enable
      */

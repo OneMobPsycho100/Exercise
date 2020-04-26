@@ -1,26 +1,24 @@
 package com.remc.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializeFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 /**
  * @Author: chenmingzhe
  * @Date: 2020/4/18 22:55
  */
-public class RabbitMqService {
+public class RabbitMQService {
 
-    private Logger logger = LoggerFactory.getLogger(RabbitMqService.class);
+    private Logger logger = LoggerFactory.getLogger(RabbitMQService.class);
 
     public static final String ROUTERKEY_ORDER = "order";
     public static final String ROUTERKEY_STOCK = "STOCK";
@@ -29,7 +27,8 @@ public class RabbitMqService {
 
     @Autowired
     private RabbitAdmin rabbitAdmin;
-
+    @Autowired
+    private SimpleMessageListenerContainer listenerContainer;
     @Autowired
     private DirectExchange directExchange;
 
@@ -38,7 +37,7 @@ public class RabbitMqService {
         Queue queue = new Queue(queueName);
         if (properties == null) {
             rabbitAdmin.declareQueue(queue);
-          //  listenerContainer.addQueues(queue);
+           listenerContainer.addQueues(queue);
         }
         rabbitAdmin.declareBinding(BindingBuilder.bind(queue).to(directExchange).with(routerKey));
     }

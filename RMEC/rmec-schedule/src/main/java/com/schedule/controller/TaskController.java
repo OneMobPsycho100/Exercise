@@ -25,7 +25,6 @@ import java.util.Optional;
  * @since 2020-04-23
  */
 @RestController
-@RequestMapping("/task")
 public class TaskController implements ScheduleTaskApi {
 
     @Autowired

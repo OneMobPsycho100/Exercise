@@ -1,12 +1,14 @@
 package com.schedule;
 
-import com.remc.config.RmecConfiguration;
-import com.schedule.common.Constants;
+import com.remc.common.Constants;
+import com.schedule.annotation.EnableSchedule;
+import com.schedule.common.ScheduleConstants;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.context.annotation.Import;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @Author: chenmingzhe
@@ -14,12 +16,13 @@ import org.springframework.context.annotation.Import;
  */
 @SpringBootApplication
 @EnableEurekaClient
+@EnableSchedule
 @MapperScan(Constants.SCAN_MAPPER)
-@Import(RmecConfiguration.class)
-public class ScheduleApplication {
+@EnableFeignClients
+public class ScheduleInstApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ScheduleApplication.class, args);
+        SpringApplication.run(ScheduleInstApplication.class, args);
     }
 
 }

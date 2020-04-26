@@ -2,6 +2,7 @@ package com.schedule.api;
 
 import com.remc.common.Result;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @Author: chenmingzhe
@@ -11,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface ScheduleTaskApi {
 
     /**
-     *创建延时任务
+     * 创建延时任务
+     *
      * @param bizId
      * @param taskName
      * @return
      */
-    Result<String> createDelayTask(String bizId,String taskName);
+    @RequestMapping("/createDelayTask")
+    Result<String> createDelayTask(@RequestParam String bizId, @RequestParam String taskName);
 }

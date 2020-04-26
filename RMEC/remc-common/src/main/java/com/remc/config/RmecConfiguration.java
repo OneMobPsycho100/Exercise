@@ -1,13 +1,10 @@
 package com.remc.config;
 
-import com.remc.common.Constants;
 import com.remc.common.IdWorker;
-import com.remc.service.RabbitMqService;
+import com.remc.service.RabbitMQService;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,8 +28,8 @@ public class RmecConfiguration {
     }
 
     @Bean
-    public RabbitMqService rabbitMqService() {
-        return new RabbitMqService();
+    public RabbitMQService rabbitMqService() {
+        return new RabbitMQService();
     }
 
 

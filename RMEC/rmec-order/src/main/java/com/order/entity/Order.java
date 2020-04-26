@@ -42,6 +42,9 @@ public class Order implements Serializable {
     @TableField("createtime")
     private LocalDateTime createtime;
 
+    public Order() {
+    }
+
     private Order(Builder builder) {
         setOrderid(builder.orderid);
         setGoodname(builder.goodname);

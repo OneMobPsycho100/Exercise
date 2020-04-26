@@ -6,10 +6,6 @@ package com.msg.common;
  */
 public class Constants {
 
-    public static final String SCAN_MAPPER = "com.msg.mapper";
-
-
-
     private Constants() {
     }
 

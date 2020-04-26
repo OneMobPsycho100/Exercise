@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.schedule.mapper.TaskDelayinstMapper">
-
+    <select id="queryInstByStatusAndTime" parameterType="string"
+            resultType="com.schedule.entity.DelayinstWorkInfo">
+        SELECT
+            td.bizid,
+            td.delayworkid,
+            dt.queuename,
+            dt.methodname,
+            dt.`name`,
+            dt.beanname
+        FROM
+            `t_task_delayinst` td
+                JOIN t_delay_task dt ON dt.delayid = td.delayid
+        WHERE td.`status` = #{status}
+        AND td.plannedtime = #{startTime}
+        ORDER BY td.bizid
+    </select>
 </mapper>

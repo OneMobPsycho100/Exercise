@@ -1,5 +1,6 @@
 package com.schedule.annotation;
 
+import com.schedule.config.ScheduleDelayConfig;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.Retention;
@@ -14,7 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Retention(RUNTIME)
 @Target(TYPE)
-@Import()
+@Import({ScheduleDelayConfig.class})
 public @interface EnableSchedule {
 
 }

@@ -20,7 +20,6 @@ import java.util.Date;
  * @author chenmingzhe
  * @since 2020-04-23
  */
-@Service
 public class DelayTaskService extends ServiceImpl<DelayTaskMapper, DelayTask> {
 
     private Logger logger = LoggerFactory.getLogger(DelayTaskService.class);
@@ -29,6 +28,7 @@ public class DelayTaskService extends ServiceImpl<DelayTaskMapper, DelayTask> {
     private Scheduler scheduler;
 
     public void addDelayTaskToJob(Date plannedTime, String taskName) {
+        logger.info("add taskJob {}",taskName);
         try {
             Trigger trigger = scheduler.getTrigger(TriggerKey.triggerKey(Constants.DELAY_JOB_TRIGGER_KEY));
             if (trigger == null || plannedTime.before(trigger.getStartTime())) {
@@ -43,12 +43,12 @@ public class DelayTaskService extends ServiceImpl<DelayTaskMapper, DelayTask> {
         Trigger trigger = TriggerBuilder.newTrigger()
                 .withIdentity(Constants.DELAY_JOB_TRIGGER_KEY)
                 .startAt(startTime)
-                .forJob(taskName)
                 .build();
-        JobDetail jobDetail = scheduler.getJobDetail(new JobKey(Constants.DELAY_JOB_KEY));
+        JobDetail jobDetail = scheduler.getJobDetail(new JobKey(Constants.DELAY_JOB_KEY
+               ));
         if (jobDetail == null) {
             jobDetail = JobBuilder.newJob(DelayTaskJob.class)
-                    .withIdentity(Constants.DELAY_JOB_KEY, Constants.DELAY_JOB_GROUP)
+                    .withIdentity(Constants.DELAY_JOB_KEY)
                     .build();
             scheduler.scheduleJob(jobDetail, trigger);
         } else {

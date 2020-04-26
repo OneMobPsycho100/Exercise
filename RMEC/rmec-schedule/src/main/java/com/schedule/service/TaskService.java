@@ -13,7 +13,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
  * @author chenmingzhe
  * @since 2020-04-23
  */
-@Service
 public class TaskService extends  ServiceImpl<TaskMapper, Task> {
 
 }

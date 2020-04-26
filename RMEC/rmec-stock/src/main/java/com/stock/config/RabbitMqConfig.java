@@ -1,7 +1,7 @@
 package com.stock.config;
 
 import com.remc.common.Constants;
-import com.stock.service.MessageQueueListener;
+import com.stock.lintener.MessageQueueListener;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
