@@ -1,4 +1,4 @@
-package com.msg.service;
+package com.msg.handler;
 
 import com.msg.entity.MessageInfo;
 import com.remc.dto.MessageDto;

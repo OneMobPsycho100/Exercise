@@ -1,7 +1,7 @@
 package com.msg.listener;
 
 import com.alibaba.fastjson.JSONObject;
-import com.msg.service.MessageHandler;
+import com.msg.handler.MessageHandler;
 import com.rabbitmq.client.Channel;
 import com.remc.dto.MessageDto;
 import org.slf4j.Logger;
