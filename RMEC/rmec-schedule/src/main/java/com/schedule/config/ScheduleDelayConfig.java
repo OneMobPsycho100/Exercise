@@ -2,14 +2,12 @@ package com.schedule.config;
 
 import com.remc.common.Constants;
 import com.remc.config.RmecConfiguration;
-import com.schedule.controller.TaskController;
 import com.schedule.listener.MessageQueueListener;
 import com.schedule.service.DelayTaskService;
 import com.schedule.service.TaskDelayinstService;
 import com.schedule.service.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.context.annotation.Bean;

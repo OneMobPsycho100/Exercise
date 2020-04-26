@@ -3,6 +3,7 @@ package com.schedule.common;
 import java.util.Arrays;
 
 /**
+ * 任务实例状态
  * @Author: chenmingzhe
  * @Date: 2020/4/24 15:11
  */

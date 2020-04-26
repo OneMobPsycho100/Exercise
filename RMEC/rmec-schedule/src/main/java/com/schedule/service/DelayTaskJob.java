@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
+ * 延时任务Job
  * @Author: chenmingzhe
  * @Date: 2020/4/24 15:14
  */
@@ -32,9 +33,11 @@ public class DelayTaskJob extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         Date startTime = context.getTrigger().getStartTime();
+        // 查询出该时间点需要执行的实例信息
         List<DelayinstWorkInfo> delayinstWorkInfos = delayInstService
                 .queryInstByStatusAndTime(DelayInstStatusEnum.NOT_RUN.getCode(), startTime)
                 .stream()
+                // 设置redis任务锁，防止多服务下任务被多次触发
                 .filter(w -> this.isLock(w.getDelayworkid()))
                 .peek(w -> {
                     delayInstService.updateStatusById(DelayInstStatusEnum.WAIT_RUN.getCode(),
@@ -43,7 +46,7 @@ public class DelayTaskJob extends QuartzJobBean {
                             Constants.ROUTERKEY_TASK_DELAY);
                 })
                 .collect(Collectors.toList());
-
+        // 往mq发送消息 对具体的实例进行调用
         for (DelayinstWorkInfo work : delayinstWorkInfos) {
             rabbitMqService.sendMessage(Constants.ROUTERKEY_TASK_DELAY, work);
         }

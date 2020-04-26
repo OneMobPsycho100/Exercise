@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/**
+/**启用定时服务
  * @Author: chenmingzhe
  * @Date: 2020/4/24 18:10
  */

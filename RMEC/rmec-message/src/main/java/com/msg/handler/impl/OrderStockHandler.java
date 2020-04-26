@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
+ * 订单库存消息处理
  * @Author: chenmingzhe
  * @Date: 2020/4/19 15:25
  */

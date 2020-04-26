@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * 监听消息，通过消息类型获取对应的bean进行处理
  * @Author: chenmingzhe
  * @Date: 2020/4/19 12:50
  */
@@ -30,6 +31,7 @@ public class MessageQueueListener implements ChannelAwareMessageListener, SmartL
 
     @Override
     public void start() {
+        // 对储存handler容器进行初始化
         String[] beanNames = applicationContext.getBeanNamesForType(MessageHandler.class);
         for (String beanName : beanNames) {
             MessageHandler bean = (MessageHandler) applicationContext.getBean(beanName);
@@ -43,6 +45,7 @@ public class MessageQueueListener implements ChannelAwareMessageListener, SmartL
             MessageDto messageDto = JSONObject
                     .parseObject(new String(message.getBody(), StandardCharsets.UTF_8), MessageDto.class);
             logger.info("消息体：{}", messageDto);
+            // 获取对应类型bean 处理消息
             MessageHandler messageHandler = handlers.get(messageDto.getBiztype());
             messageHandler.process(messageDto);
         } catch (Exception e) {

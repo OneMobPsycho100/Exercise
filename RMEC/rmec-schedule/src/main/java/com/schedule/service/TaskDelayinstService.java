@@ -64,15 +64,22 @@ public class TaskDelayinstService extends ServiceImpl<TaskDelayinstMapper, TaskD
                 .eq(TaskDelayinst::getDelayworkid, delayWorkId).update();
     }
 
+    /**
+     * 通过反射
+     * 调用具体的任务实例
+     * @param workInfo
+     */
     public void transferInstance(DelayinstWorkInfo workInfo) {
         boolean isSucceed = true;
         LocalDateTime before = LocalDateTime.now();
         TaskDelayinst delayInst = this.getById(workInfo.getDelayworkid());
         try {
+            // 先判断任务状态
             if (DelayInstStatusEnum.WAIT_RUN.getCode()
                     .equals(delayInst.getStatus())) {
                 delayInst.setStatus(DelayInstStatusEnum.RUNNING.getCode());
                 this.updateById(delayInst);
+                // 通过name获取到具体的实例
                 Object bean = applicationContext.getBean(workInfo.getBeanname());
                 Method method = bean.getClass().getMethod(workInfo.getMethodname(), String.class);
                 method.invoke(bean, workInfo.getBizId());
@@ -82,6 +89,7 @@ public class TaskDelayinstService extends ServiceImpl<TaskDelayinstMapper, TaskD
             isSucceed = false;
             logger.error("method call error", e);
         } finally {
+            // 修改任务状态为结束
             delayInst.setStatus(DelayInstStatusEnum.COMPLETE.getCode());
             delayInst.setIssuc(isSucceed ? "1" : "0");
             delayInst.setRuntime(before.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
