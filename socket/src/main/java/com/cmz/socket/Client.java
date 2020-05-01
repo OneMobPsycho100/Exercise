@@ -1,9 +1,5 @@
 package com.cmz.socket;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import com.sun.org.apache.xerces.internal.dom.PSVIAttrNSImpl;
-import sun.net.util.IPAddressUtil;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -40,7 +36,8 @@ public class Client {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("客户端已关闭...");
+           // e.printStackTrace();
         }
     }
 }

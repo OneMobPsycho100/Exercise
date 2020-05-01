@@ -3,7 +3,6 @@ package com.cmz.test;
 import com.cmz.cash.UserPayFactory;
 import com.cmz.cash.UserPayService;
 import com.cmz.cash.impl.Calculation;
-import com.cmz.cash.impl.PhoneUserPayService;
 
 import java.math.BigDecimal;
 

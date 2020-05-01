@@ -15,7 +15,7 @@ public class ThreadedServerHandler implements Runnable {
     private Socket client;
     private int clientNo;
 
-    public ThreadedServerHandler(Socket client, int clientNo) {
+    ThreadedServerHandler(Socket client, int clientNo) {
         if (client!=null) {
             this.client = client;
             this.clientNo = clientNo;
@@ -42,11 +42,12 @@ public class ThreadedServerHandler implements Runnable {
                     client.close();
                 } else {
                     System.out.println("收到客户端[" + clientNo + "]的消息：" + inputLine);
-                    os.println("回复客户端的消息：" + inputLine);
+                    os.println("回复客户端的消息：" + inputLine.replaceAll("/!","?"));
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("连接已断开" + clientNo);
+          //  e.printStackTrace();
         }
     }
 }

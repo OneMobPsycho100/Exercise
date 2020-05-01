@@ -13,7 +13,7 @@ public class FileSearch {
     private ConcurrentHashMap<String, Integer> map;
     private String dir;
     private CountDownLatch latch;
-    private ThreadPoolExecutor executorService;
+    private ExecutorService executorService;
 
     public FileSearch(String dir) {
         this.dir = dir;
@@ -35,14 +35,14 @@ public class FileSearch {
                 throw new NullPointerException("file is empty");
             }
             for (File file : files) {
-                executorService.execute(new FileReaderHandler(file, map, latch));
+                this.executorService.execute(new FileReaderHandler(file, map, latch));
             }
             try {
                 latch.await();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            executorService.shutdown();
+            this.executorService.shutdown();
             System.out.println("耗时：" + (System.currentTimeMillis() - l) + "-------------");
         }
         return map;

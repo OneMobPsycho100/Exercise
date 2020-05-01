@@ -22,7 +22,6 @@ public class SingleThreadServer {
     public void startServer() {
         ServerSocket server = null;
         int i = 0;
-
         try {
             server = new ServerSocket(this.port);
             System.out.println("服务端启动成功...");
@@ -42,17 +41,17 @@ public class SingleThreadServer {
             os = new PrintStream(client.getOutputStream());
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                if ("quit".equalsIgnoreCase(inputLine)) {
-                    System.out.println("关闭客户端[" + clientNo + "]...");
-                    os.close();
-                    in.close();
-                    client.close();
-                } else {
-                    System.out.println("收到客户端[" + clientNo + "]的消息：" + inputLine);
-                    os.println("回复客户端的消息：" + inputLine);
-                }
-            }
+    while ((inputLine = in.readLine()) != null) {
+        if ("quit".equalsIgnoreCase(inputLine)) {
+            System.out.println("关闭客户端[" + clientNo + "]...");
+            os.close();
+            in.close();
+            client.close();
+        } else {
+            System.out.println("收到客户端[" + clientNo + "]的消息：" + inputLine);
+            os.println("回复客户端的消息：" + inputLine);
+        }
+    }
         } catch (IOException e) {
             e.printStackTrace();
         }
