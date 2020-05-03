@@ -11,6 +11,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.Advisor;
 import org.springframework.aop.framework.Advised;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -23,12 +24,11 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
+ * 安装卸载等插件功能的具体实现
+ *
  * @Author: chenmingzhe
  * @Date: 2020/4/29 16:52
  */
@@ -47,7 +47,8 @@ public class DefaultSpringPluginFactory implements ApplicationContextAware, Init
     }
 
     @Pointcut()
-    public void pointCut(){}
+    public void pointCut() {
+    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -56,9 +57,13 @@ public class DefaultSpringPluginFactory implements ApplicationContextAware, Init
 
     @Override
     public void afterPropertiesSet() {
+        // 在初始化完成后从本地缓存中加载配置（避免项目重启后插件失效）
         this.loaderLocalPlugins();
     }
 
+    /**
+     * 加载本地插件配置
+     */
     private void loaderLocalPlugins() {
         try {
             Map<String, PluginConfig> localConfig = this.readerLocalConfigs();
@@ -69,12 +74,18 @@ public class DefaultSpringPluginFactory implements ApplicationContextAware, Init
             localConfig.values().stream()
                     .filter(PluginConfig::getActive)
                     .forEach(config -> activePlugin(config.getId()));
+
             logger.info("init spring-aop-plugin {}", localConfig);
         } catch (IOException e) {
             throw new PluginException("loader failed", e);
         }
     }
 
+    /**
+     * 读取本地文件配置
+     * @return
+     * @throws IOException
+     */
     private Map<String, PluginConfig> readerLocalConfigs() throws IOException {
         File configFile = new File(BASE_DIR + "plugin-config.json");
         if (!configFile.exists()) {
@@ -86,6 +97,10 @@ public class DefaultSpringPluginFactory implements ApplicationContextAware, Init
                 });
     }
 
+    /**
+     * 启用插件
+     * @param pluginId
+     */
     @Override
     public void activePlugin(String pluginId) {
         if (!configMap.containsKey(pluginId)) {
@@ -111,6 +126,12 @@ public class DefaultSpringPluginFactory implements ApplicationContextAware, Init
         }
     }
 
+    /**
+     * 下载插件装载
+     * @param config
+     * @return
+     * @throws Exception
+     */
     private Advice buildAdvice(PluginConfig config) throws Exception {
         String className = config.getClassName();
         if (adviceCache.containsKey(className)) {
@@ -159,7 +180,42 @@ public class DefaultSpringPluginFactory implements ApplicationContextAware, Init
 
     @Override
     public void disablePlugin(String pluginId) {
+        if (!configMap.containsKey(pluginId)) {
+            throw new PluginException(String
+                    .format("Id=%s is not exists", pluginId));
+        }
+        PluginConfig config = configMap.get(pluginId);
+        for (String name : applicationContext.getBeanDefinitionNames()) {
+            Object bean = applicationContext.getBean(name);
+            if (bean instanceof Advised) {
+                Advice advice = findAdvice(
+                        config.getClassName(), (Advised) bean);
+                if (advice != null) {
+                    ((Advised) bean).removeAdvice(advice);
+                }
+            }
+        }
+        config.setActive(false);
 
+        try {
+            storeConfigs();
+        } catch (IOException e) {
+            // 保存失败回滚
+            activePlugin(pluginId);
+            throw new PluginException(String
+                    .format("id=%s disable failed", pluginId), e);
+        }
+    }
+
+    private Advice findAdvice(String className, Advised advised) {
+        String name;
+        for (Advisor advisor : advised.getAdvisors()) {
+            name = advisor.getAdvice().getClass().getName();
+            if (name.equals(className)) {
+                return advisor.getAdvice();
+            }
+        }
+        return null;
     }
 
     @Override
@@ -167,7 +223,7 @@ public class DefaultSpringPluginFactory implements ApplicationContextAware, Init
         String pluginId = plugin.getId();
         if (configMap.containsKey(pluginId)) {
             throw new PluginException(String
-                    .format("The plugin already exists id=%s", pluginId));
+                    .format("the plugin already exists id=%s", pluginId));
         }
 
         configMap.put(pluginId, plugin);
@@ -218,13 +274,21 @@ public class DefaultSpringPluginFactory implements ApplicationContextAware, Init
     }
 
     @Override
-    public void uninstallPlugin(PluginConfig plugin) {
-
+    public void uninstallPlugin(String pluginId) {
+        this.disablePlugin(pluginId);
+        configMap.remove(pluginId);
+        try {
+            storeConfigs();
+        } catch (IOException e) {
+            activePlugin(pluginId);
+            throw new PluginException(String
+                    .format("plugin =%s uninstall failed", pluginId));
+        }
     }
 
     @Override
     public List<PluginConfig> getPluginList() {
-        return null;
+        return new ArrayList<>(configMap.values());
     }
 
 }

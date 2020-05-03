@@ -35,9 +35,9 @@ public interface SpringPluginFactory{
 
     /**
      * 卸载插件
-     * @param plugin
+     * @param pluginId
      */
-    public void uninstallPlugin(PluginConfig plugin);
+    public void uninstallPlugin(String pluginId);
 
     /**
      * 获取插件列表

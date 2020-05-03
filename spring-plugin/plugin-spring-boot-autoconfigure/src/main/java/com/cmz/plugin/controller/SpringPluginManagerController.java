@@ -1,6 +1,7 @@
 package com.cmz.plugin.controller;
 
 import com.cmz.plugin.factory.SpringPluginFactory;
+import com.cmz.plugin.module.PluginConfig;
 import com.cmz.plugin.module.PluginSite;
 import com.cmz.plugin.module.Result;
 import com.cmz.plugin.utils.PluginUtil;
@@ -12,13 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * @Author: chenmingzhe
  * @Date: 2020/4/29 16:55
  */
-@RestController("/plugin")
+@RestController
+@RequestMapping("/plugin")
 public class SpringPluginManagerController {
 
     @Autowired
@@ -41,6 +44,12 @@ public class SpringPluginManagerController {
         return Result.getSuccess();
     }
 
+    @RequestMapping("/uninstall")
+    public Result<String> uninstallPlugin(@RequestParam String id) {
+        pluginFactory.uninstallPlugin(id);
+        return Result.getSuccess();
+    }
+
     @RequestMapping("/site")
     public Result<Map<String, PluginSite>> openSite(@RequestParam String url) throws IOException {
         PluginSite site = PluginUtil.getSite(url);
@@ -49,4 +58,14 @@ public class SpringPluginManagerController {
         return Result.getSuccess(result);
     }
 
+    @RequestMapping("/disabled")
+    public Result<String> disabled(@RequestParam String id) {
+        pluginFactory.disablePlugin(id);
+        return Result.getSuccess();
+    }
+
+    @RequestMapping("/plugins")
+    public Result<List<PluginConfig>> getPlugins() {
+        return Result.getSuccess(pluginFactory.getPluginList());
+    }
 }

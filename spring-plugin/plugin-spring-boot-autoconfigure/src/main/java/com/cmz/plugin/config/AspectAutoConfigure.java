@@ -11,12 +11,8 @@ import javassist.bytecode.ConstPool;
 import javassist.bytecode.MethodInfo;
 import javassist.bytecode.annotation.Annotation;
 import javassist.bytecode.annotation.StringMemberValue;
-import org.aopalliance.aop.Advice;
-import org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.*;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 
 /**
@@ -59,23 +55,25 @@ public class AspectAutoConfigure implements EnvironmentAware, ApplicationContext
             pool.insertClassPath(classPath);
             //获取要修改的Class
             CtClass ct = pool.get("com.cmz.plugin.factory.impl.DefaultSpringPluginFactory");
-            CtMethod[] cms;
-            cms = ct.getDeclaredMethods();
-            for (CtMethod cm : cms) {
+            for (CtMethod cm : ct.getDeclaredMethods()) {
                 //找到@pointcut 注解的方法
                 if ("pointcut".equals(cm.getName())) {
                     MethodInfo methodInfo = cm.getMethodInfo();
                     ConstPool cPool = methodInfo.getConstPool();
-                    AnnotationsAttribute attribute = new AnnotationsAttribute(cPool, AnnotationsAttribute.visibleTag);
+                    AnnotationsAttribute attribute =
+                            new AnnotationsAttribute(cPool, AnnotationsAttribute.visibleTag);
                     //获取@pointcut 注解，修改其value值
-                    Annotation annotation = new Annotation("org.aspectj.lang.annotation.Pointcut", cPool);
-                    annotation.addMemberValue("value", new StringMemberValue(environment.getProperty(Constants.PLUGIN_POINTCUT), cPool));
+                    Annotation annotation =
+                            new Annotation("org.aspectj.lang.annotation.Pointcut", cPool);
+                    annotation.addMemberValue("value",
+                            new StringMemberValue(environment.getProperty(Constants.PLUGIN_POINTCUT), cPool));
                     attribute.setAnnotation(annotation);
                     methodInfo.addAttribute(attribute);
                     //覆盖原有类
                     ct.toClass();
                     //使用类加载器重新加载Aop类
-                    pool.getClassLoader().loadClass("com.cmz.plugin.factory.impl.DefaultSpringPluginFactory");
+                    pool.getClassLoader()
+                            .loadClass("com.cmz.plugin.factory.impl.DefaultSpringPluginFactory");
                 }
             }
         } catch (Exception e) {
