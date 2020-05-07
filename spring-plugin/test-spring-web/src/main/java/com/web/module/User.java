@@ -1,4 +1,4 @@
-package com.cmz.module;
+package com.web.module;
 
 /**
  * @Author: chenmingzhe

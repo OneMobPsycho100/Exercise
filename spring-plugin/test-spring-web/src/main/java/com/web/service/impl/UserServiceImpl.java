@@ -1,7 +1,7 @@
-package com.cmz.service.impl;
+package com.web.service.impl;
 
-import com.cmz.module.User;
-import com.cmz.service.UserService;
+import com.web.module.User;
+import com.web.service.UserService;
 
 /**
  * @Author: chenmingzhe

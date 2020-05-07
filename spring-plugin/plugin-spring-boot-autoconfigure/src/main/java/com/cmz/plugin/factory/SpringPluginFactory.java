@@ -1,8 +1,6 @@
 package com.cmz.plugin.factory;
 
 import com.cmz.plugin.module.PluginConfig;
-import org.aopalliance.aop.Advice;
-import org.aopalliance.intercept.MethodInterceptor;
 
 import java.util.List;
 

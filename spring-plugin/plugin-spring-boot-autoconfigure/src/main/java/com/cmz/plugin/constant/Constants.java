@@ -6,7 +6,7 @@ package com.cmz.plugin.constant;
  */
 public class Constants {
 
-    private static final String BASE_PLUGIN = "plugin.aop";
+    public static final String BASE_PLUGIN = "plugin.aop";
     public static final String PLUGIN_ACTIVE = "plugin.active";
     public static final String PLUGIN_POINTCUT = BASE_PLUGIN + ".pointcut";
 
