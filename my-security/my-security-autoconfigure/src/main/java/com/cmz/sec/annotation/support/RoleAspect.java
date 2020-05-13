@@ -1,4 +1,4 @@
-package com.cmz.sec.aspect;
+package com.cmz.sec.annotation.support;
 
 import com.cmz.sec.annotation.HasRole;
 import com.cmz.sec.context.MySecurityContextHolder;
@@ -9,6 +9,8 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.util.Assert;
+
+import java.util.Optional;
 
 /**
  * @Author: chenmingzhe
@@ -26,8 +28,11 @@ public class RoleAspect {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         HasRole annotation = signature.getMethod().getAnnotation(HasRole.class);
         String roleName = annotation.value();
-        Assert.notNull(roleName, "roleName must not null");
-        MySecurityContextHolder.getUserContext().getAuthorities()
+        Assert.notNull(roleName, "RoleName must not null");
+        Optional.ofNullable(MySecurityContextHolder
+                .getUserContext())
+                .orElseThrow(() -> new MySecurityException("Insufficient user rights"))
+                .getAuthorities()
                 .stream()
                 .filter(r -> r.equals(roleName))
                 .findFirst()

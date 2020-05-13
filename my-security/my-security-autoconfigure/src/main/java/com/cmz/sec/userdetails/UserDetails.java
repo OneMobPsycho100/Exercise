@@ -9,22 +9,29 @@ import java.util.Set;
  */
 public class UserDetails implements Serializable {
 
+    private String userId;
     private String password;
-    private final String username;
-    private final Set<String> authorities;
-    private final boolean enabled;
+    private String username;
+    private Set<String> authorities;
 
 
-    public UserDetails(String password, String username, Set<String> authorities, boolean enabled) {
-        if (username == null || "".equals(username) || password == null) {
-            throw new IllegalArgumentException(
-                    "Cannot pass null or empty values to constructor");
-        }
+    public UserDetails() {
+    }
 
+    public UserDetails(String userId, String password, String username, Set<String> authorities) {
+//        if (username == null || "".equals(username) || password == null) {
+//            throw new IllegalArgumentException(
+//                    "Cannot pass null or empty values to constructor");
+//        }
+
+        this.userId = userId;
         this.password = password;
         this.username = username;
         this.authorities = authorities;
-        this.enabled = enabled;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public String getPassword() {
@@ -39,7 +46,13 @@ public class UserDetails implements Serializable {
         return authorities;
     }
 
-    public boolean isEnabled() {
-        return enabled;
+    @Override
+    public String toString() {
+        return "UserDetails{" +
+                "userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", username='" + username + '\'' +
+                ", authorities=" + authorities +
+                '}';
     }
 }
