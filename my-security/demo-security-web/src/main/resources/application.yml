@@ -1,0 +1,20 @@
+server:
+  port: 8100
+
+my-security:
+  # 白名单
+  whitelist:
+    - /login
+    - /error
+    - /sec/formLogin
+    - /sec/jsonLogin
+    - /sec/cookieLogin
+
+  loginUrl: /login
+  jwtProperties:
+    # jwt sign算法
+    algorithm: hs512
+    # jwt secret
+    secret: secretsecretsecretsecretsecretsecretsecretsecretsecret
+    # jwt 有效时间
+    expiration-in-second: 1209600
