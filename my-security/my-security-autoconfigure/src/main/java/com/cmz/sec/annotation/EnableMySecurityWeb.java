@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Import;
 import java.lang.annotation.*;
 
 /**
+ * 开启web端权限验证,服务间的调用默认安全不需要认证
  * @Author: chenmingzhe
  * @Date: 2020/5/13 11:52
  */

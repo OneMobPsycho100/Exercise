@@ -1,0 +1,11 @@
+server:
+  port: 8101
+
+my-security:
+  jwtProperties:
+    # jwt sign算法
+    algorithm: hs512
+    # jwt secret
+    secret: secretsecretsecretsecretsecretsecretsecretsecretsecret
+    # jwt 有效时间
+    expiration-in-second: 1209600

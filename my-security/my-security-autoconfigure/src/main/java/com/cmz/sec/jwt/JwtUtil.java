@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
+ * jwt
  * @Author: chenmingzhe
  * @Date: 2020/5/13 13:42
  */
@@ -97,7 +98,7 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>(3);
         claims.put(USER_ID, user.getUserId());
         claims.put(USERNAME, user.getUsername());
-        claims.put(ROLES, user.getAuthorities());
+        claims.put(ROLES, user.getRoles());
         Date createdTime = new Date();
         Date expirationTime = this.getExpirationTime();
         byte[] keyBytes = this.securityProperties
@@ -138,7 +139,7 @@ public class JwtUtil {
     public UserDetails getUserFromToken(String token) {
         // 从token中获取user
         Claims claims = this.getClaimsFromToken(token);
-        Set<String> roles = (Set<String>) claims.get(ROLES);
+        List<String> roles = (List<String>) claims.get(ROLES);
         String userId = (String) claims.get(USER_ID);
         String username = (String) claims.get(USERNAME);
         return new UserDetails(userId, null, username, roles);

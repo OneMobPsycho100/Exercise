@@ -1,10 +1,8 @@
 package com.cmz.sec.interceptor;
 
-import com.alibaba.fastjson.JSONObject;
 import com.cmz.sec.context.MySecurityContextHolder;
 import com.cmz.sec.exception.MySecurityException;
 import com.cmz.sec.properties.MySecurityProperties;
-import com.cmz.sec.userdetails.UserDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.AntPathMatcher;

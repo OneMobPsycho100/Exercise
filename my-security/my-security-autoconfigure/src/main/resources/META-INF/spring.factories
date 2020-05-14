@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.cmz.sec.config.MySecurityAutoConfiguration
+com.cmz.sec.config.MySecurityAutoConfiguration,\
+com.cmz.sec.config.MySecurityServiceAutoConfiguration

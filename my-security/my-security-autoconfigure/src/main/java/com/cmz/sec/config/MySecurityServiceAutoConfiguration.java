@@ -25,13 +25,12 @@ import java.util.List;
  */
 @Configuration
 @EnableConfigurationProperties(MySecurityProperties.class)
-@ConditionalOnBean({MySecurityWebMarkerConfiguration.MyMarker.class})
-public class MySecurityAutoConfiguration implements WebMvcConfigurer {
+public class MySecurityServiceAutoConfiguration implements WebMvcConfigurer {
 
     private MySecurityProperties properties;
     private JwtUtil jwtUtil;
 
-    public MySecurityAutoConfiguration(MySecurityProperties properties) {
+    public MySecurityServiceAutoConfiguration(MySecurityProperties properties) {
         this.properties = properties;
         this.jwtUtil = new JwtUtil(properties);
     }
@@ -42,27 +41,16 @@ public class MySecurityAutoConfiguration implements WebMvcConfigurer {
         return this.jwtUtil;
     }
 
-    @Bean
-    @ConditionalOnMissingBean
+    @Bean@ConditionalOnMissingBean
+
     public RoleAspect roleAspect() {
         return new RoleAspect();
-    }
-
-    @Bean
-    public UserLoginService loginService() {
-        return new UserLoginService();
-    }
-
-    @Bean
-    public UserLoginController loginController() {
-        return new UserLoginController();
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new UserAuthRestInterceptor(jwtUtil))
                 .excludePathPatterns(properties.getWhitelist());
-        registry.addInterceptor(new MySecurityInterceptor(properties));
     }
 
     @Override

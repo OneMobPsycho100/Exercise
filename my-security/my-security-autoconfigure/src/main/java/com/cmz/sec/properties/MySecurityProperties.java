@@ -3,8 +3,8 @@ package com.cmz.sec.properties;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author: chenmingzhe
@@ -16,10 +16,10 @@ public class MySecurityProperties {
     /**
      * 路径白名单
      */
-    private Set<String> whitelist = new HashSet<>();
+    private List<String> whitelist = new ArrayList<>();
 
     /**
-     *登录地址
+     * 登录地址
      */
     private String loginUrl = "/login";
 
@@ -29,17 +29,21 @@ public class MySecurityProperties {
     private JwtProperties jwtProperties = new JwtProperties();
 
 
-    public Set<String> getWhitelist() {
+    public List<String> getWhitelist() {
         return whitelist;
     }
 
-    public void setWhitelist(Set<String> whitelist) {
+    public void setWhitelist(List<String> whitelist) {
         this.whitelist = whitelist;
     }
 
-    public String getLoginUrl() { return loginUrl; }
+    public String getLoginUrl() {
+        return loginUrl;
+    }
 
-    public void setLoginUrl(String loginUrl) { this.loginUrl = loginUrl; }
+    public void setLoginUrl(String loginUrl) {
+        this.loginUrl = loginUrl;
+    }
 
     public JwtProperties getJwtProperties() {
         return jwtProperties;
@@ -53,7 +57,7 @@ public class MySecurityProperties {
         /**
          * 盐
          */
-        private String secret = "mySecurity";
+        private String secret = "mySecuritymySecuritymySecuritymySecuritymySecuritymySecuritymySecurity";
 
         /**
          * token有效时间s，默认3天

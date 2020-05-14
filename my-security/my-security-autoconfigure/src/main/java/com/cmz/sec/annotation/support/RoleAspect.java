@@ -32,7 +32,7 @@ public class RoleAspect {
         Optional.ofNullable(MySecurityContextHolder
                 .getUserContext())
                 .orElseThrow(() -> new MySecurityException("Insufficient user rights"))
-                .getAuthorities()
+                .getRoles()
                 .stream()
                 .filter(r -> r.equals(roleName))
                 .findFirst()

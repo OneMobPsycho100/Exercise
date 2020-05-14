@@ -1,5 +1,6 @@
 package com.cmz.sec.web;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cmz.sec.userdetails.UserDetails;
 import com.cmz.sec.web.service.UserLoginService;
 import org.apache.commons.lang3.StringUtils;
@@ -19,7 +20,7 @@ public class UserLoginController {
 
     @PostMapping("/formLogin")
     public String formLogin(@RequestParam String username, @RequestParam String password) {
-        String token = loginService.verify(username, password);
+        String token = loginService.login(username, password);
         if (StringUtils.isNotBlank(token)) {
             return token;
         }
@@ -28,7 +29,7 @@ public class UserLoginController {
 
     @PostMapping("/jsonLogin")
     public String jsonLogin(@RequestBody UserDetails user) {
-        String token = loginService.verify(user);
+        String token = loginService.login(user.getUsername(), user.getPassword());
         if (StringUtils.isNotBlank(token)) {
             return token;
         }
@@ -37,7 +38,8 @@ public class UserLoginController {
 
     @PostMapping("/cookieLogin")
     public String cookieLogin(@CookieValue String userStr) {
-        String token = loginService.verify(userStr);
+        UserDetails user = JSONObject.parseObject(userStr, UserDetails.class);
+        String token = loginService.login(user.getUsername(), user.getPassword());
         if (StringUtils.isNotBlank(token)) {
             return token;
         }
