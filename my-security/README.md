@@ -1,4 +1,3 @@
-写在前面：由于个人时间原因，未能全部完成所有功能，oauth2较为复杂未能支持，会在后续时间尽量完成，请面试官海涵
 ## my-security 快速开始
 * 引入 my-security-starter 依赖，需要springboot基础环境支持，本项目基于springboot2.2
 * 使用`@EnableMySecurityWeb`开启web端权限支持,服务调用不需要开启，必要的资源会自动装配
