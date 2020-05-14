@@ -41,8 +41,8 @@ public class MySecurityServiceAutoConfiguration implements WebMvcConfigurer {
         return this.jwtUtil;
     }
 
-    @Bean@ConditionalOnMissingBean
-
+    @Bean
+    @ConditionalOnMissingBean
     public RoleAspect roleAspect() {
         return new RoleAspect();
     }
